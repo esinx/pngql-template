@@ -21,7 +21,7 @@ First, clone this repo using `degit` or any other template generator tool you ar
 npx degit esinx/pngql-template#main ./destination
 ```
 
-Run `scripts/create-keys.sh` to create JWT keys.
+Run `scripts/create-keys.sh [out dir (default: ./keys)]` to create JWT keys.
 Use the `.env.default` configuration if you wish. Change the variables as you need.
 
 ```
