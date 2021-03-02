@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "ts-node-dev --transpile-only --no-notify src/main.ts",
 		"build": "tsc",
+		"start": "node ./dist/main.js",
 		"generate": "prisma generate && ts-node --transpile-only src/schema",
 		"prisma": "prisma generate",
 		"prisma-push": "prisma db push --preview-feature",
