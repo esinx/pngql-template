@@ -25,6 +25,6 @@ export default makeSchema({
 	},
 	contextType: {
 		module: require.resolve("../context"),
-		export: "Context"
+		export: "ServerContext"
 	}
 })

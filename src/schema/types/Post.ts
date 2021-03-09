@@ -54,7 +54,7 @@ export const CreatePosts = mutationField("createPost", {
 	resolve: async ({}, { title, content }, { prisma, jwt }) => {
 		const post = await prisma.post.create({
 			data: {
-				authorId: jwt.payload.id,
+				authorId: jwt.payload!.id,
 				title,
 				content,
 				date: new Date().getTime()

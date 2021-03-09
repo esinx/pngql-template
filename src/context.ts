@@ -1,22 +1,27 @@
 import { PrismaClient } from "@prisma/client"
 import type { ServerConfig } from "./server"
 import type { Request } from "express"
-import SignJWT from "jose/jwt/sign"
+import SignJWT, { JWTPayload } from "jose/jwt/sign"
 import jwtVerify from "jose/jwt/verify"
 import type { KeyObject } from "crypto"
 
-export interface Context {
+interface ServerJWTPayload extends JWTPayload {
+	id: string
+}
+interface Context<T> {
 	req: Request
 	prisma: PrismaClient
 	config: ServerConfig
 	jwt: {
 		sign: (payload: any) => Promise<string>
 		authorized: boolean
-		payload?: any
+		payload: T | null
 	}
 }
 
-const signJWT = (privateKey: KeyObject, payload: any) =>
+export type ServerContext = Context<ServerJWTPayload>
+
+const signJWT = (privateKey: KeyObject, payload: ServerJWTPayload) =>
 	new SignJWT({
 		...payload
 	})
@@ -40,9 +45,11 @@ const verifyJWT = async (publicKey: KeyObject, token: string) =>
 
 const createContext = (
 	config: ServerConfig
-): ((arg: { req: Request }) => Promise<Context>) => async ({ req }) => {
+): ((arg: { req: Request }) => Promise<ServerContext>) => async ({ req }) => {
 	const token = req.headers.authorization
-	const payload = token ? await verifyJWT(config.jwtKey.public, token) : null
+	const payload = token
+		? ((await verifyJWT(config.jwtKey.public, token)) as ServerJWTPayload)
+		: null
 	return {
 		req,
 		prisma: new PrismaClient(),

@@ -56,7 +56,7 @@ export const UserMeta = queryField("me", {
 	authorize: ({}, {}, { jwt }) => jwt.authorized,
 	resolve: async ({}, {}, { prisma, jwt }) => {
 		console.log({ jwt })
-		const { id } = jwt.payload
+		const { id } = jwt.payload!
 		const user = await prisma.user.findUnique({ where: { id } })
 		if (!user) throw new Error(`User with id: ${id} does not exist`)
 		return user
