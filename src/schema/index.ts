@@ -2,6 +2,8 @@ import path from 'path'
 import { fieldAuthorizePlugin, makeSchema } from 'nexus'
 import * as types from './types'
 
+const PROJECT_ROOT = path.resolve(__dirname, '../../')
+
 export default makeSchema({
 	types,
 	plugins: [fieldAuthorizePlugin()],
@@ -9,8 +11,8 @@ export default makeSchema({
 		modules: [
 			{
 				module: path.resolve(
-					__dirname,
-					'../../node_modules/.prisma/client/index.d.ts',
+					PROJECT_ROOT,
+					'./node_modules/.prisma/client/index.d.ts',
 				),
 				alias: 'prisma',
 			},
@@ -18,10 +20,10 @@ export default makeSchema({
 	},
 	outputs: {
 		typegen: path.resolve(
-			__dirname,
-			'../../node_modules/@types/nexus-typegen/index.d.ts',
+			PROJECT_ROOT,
+			'./node_modules/@types/nexus-typegen/index.d.ts',
 		),
-		schema: path.join(__dirname, './schema.graphql'),
+		schema: path.join(PROJECT_ROOT, './schema.generated.graphql'),
 	},
 	contextType: {
 		module: require.resolve('../context'),
