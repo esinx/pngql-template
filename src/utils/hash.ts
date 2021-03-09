@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+import bcrypt from 'bcrypt'
 
 export const create = async (password: string): Promise<string> =>
 	new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ export const create = async (password: string): Promise<string> =>
 
 export const compare = async (
 	password: string,
-	hash: string
+	hash: string,
 ): Promise<boolean> =>
 	new Promise((resolve, reject) => {
 		bcrypt.compare(password, hash, (err, res) => {

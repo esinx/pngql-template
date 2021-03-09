@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client"
-import type { ServerConfig } from "./server"
-import type { Request } from "express"
-import SignJWT, { JWTPayload } from "jose/jwt/sign"
-import jwtVerify from "jose/jwt/verify"
-import type { KeyObject } from "crypto"
+import { PrismaClient } from '@prisma/client'
+import type { ServerConfig } from './server'
+import type { Request } from 'express'
+import SignJWT, { JWTPayload } from 'jose/jwt/sign'
+import jwtVerify from 'jose/jwt/verify'
+import type { KeyObject } from 'crypto'
 
 interface ServerJWTPayload extends JWTPayload {
 	id: string
@@ -23,28 +23,28 @@ export type ServerContext = Context<ServerJWTPayload>
 
 const signJWT = (privateKey: KeyObject, payload: ServerJWTPayload) =>
 	new SignJWT({
-		...payload
+		...payload,
 	})
 		.setProtectedHeader({
-			alg: "RS256"
+			alg: 'RS256',
 		})
 		.setIssuedAt()
-		.setExpirationTime("1y")
-		.setIssuer("template:pngql:example")
-		.setAudience("template:pngql:example")
+		.setExpirationTime('1y')
+		.setIssuer('template:pngql:example')
+		.setAudience('template:pngql:example')
 		.sign(privateKey)
 
 const verifyJWT = async (publicKey: KeyObject, token: string) =>
 	(
 		await jwtVerify(token, publicKey, {
 			clockTolerance: 20,
-			issuer: "template:pngql:example",
-			audience: "template:pngql:example"
+			issuer: 'template:pngql:example',
+			audience: 'template:pngql:example',
 		})
 	).payload
 
 const createContext = (
-	config: ServerConfig
+	config: ServerConfig,
 ): ((arg: { req: Request }) => Promise<ServerContext>) => async ({ req }) => {
 	const token = req.headers.authorization
 	const payload = token
@@ -57,8 +57,8 @@ const createContext = (
 		jwt: {
 			payload,
 			authorized: !!payload,
-			sign: payload => signJWT(config.jwtKey.private, payload)
-		}
+			sign: (payload) => signJWT(config.jwtKey.private, payload),
+		},
 	}
 }
 

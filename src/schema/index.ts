@@ -1,6 +1,6 @@
-import path from "path"
-import { fieldAuthorizePlugin, makeSchema } from "nexus"
-import * as types from "./types"
+import path from 'path'
+import { fieldAuthorizePlugin, makeSchema } from 'nexus'
+import * as types from './types'
 
 export default makeSchema({
 	types,
@@ -10,21 +10,21 @@ export default makeSchema({
 			{
 				module: path.resolve(
 					__dirname,
-					"../../node_modules/.prisma/client/index.d.ts"
+					'../../node_modules/.prisma/client/index.d.ts',
 				),
-				alias: "prisma"
-			}
-		]
+				alias: 'prisma',
+			},
+		],
 	},
 	outputs: {
 		typegen: path.resolve(
 			__dirname,
-			"../../node_modules/@types/nexus-typegen/index.d.ts"
+			'../../node_modules/@types/nexus-typegen/index.d.ts',
 		),
-		schema: path.join(__dirname, "./schema.graphql")
+		schema: path.join(__dirname, './schema.graphql'),
 	},
 	contextType: {
-		module: require.resolve("../context"),
-		export: "ServerContext"
-	}
+		module: require.resolve('../context'),
+		export: 'ServerContext',
+	},
 })
